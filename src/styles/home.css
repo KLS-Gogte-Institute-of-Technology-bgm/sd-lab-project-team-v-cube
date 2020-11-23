@@ -1,0 +1,61 @@
+#home-main {
+  height: 100vh;
+  background: black;
+}
+
+#home-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: auto;
+  width: 40%;
+  margin-top: 70px;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 99;
+}
+
+.img {
+  width: 100vw;
+  max-height: 100vh;
+}
+
+#book-a-table {
+  position: relative;
+  display: block;
+  height: auto;
+  width: auto;
+  margin-top: -100px;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 999;
+  text-decoration: none;
+}
+
+#book-a-table:hover {
+  background: none;
+  border: 2px solid orange;
+  color: white;
+}
+
+#login-link:hover {
+  text-decoration: none;
+}
+
+/* @media only screen and (max-width: 600px) {
+  #home-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    max-height: 50%;
+    max-width: 200px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 99;
+  }
+} */
