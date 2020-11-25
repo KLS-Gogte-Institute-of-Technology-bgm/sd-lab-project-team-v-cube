@@ -1,8 +1,8 @@
 import React from 'react';
-import NavBar from './components/NavBar/Navbar'
+import NavBar from '../NavBar/Navbar'
 import { Link } from 'react-router-dom';
-import './components/Login/Login.css';
-import login3 from './images/login3.jpg';
+import './Login.css';
+import login3 from '../../images/login3.jpg';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
 class LogIn extends React.Component {

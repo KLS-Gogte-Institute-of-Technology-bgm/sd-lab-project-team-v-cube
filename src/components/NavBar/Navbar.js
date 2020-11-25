@@ -1,6 +1,6 @@
 import React from 'react';
-import './components/Login/Login.css';
-import logo from './images/logo.png';
+import '../Login/Login.css';
+import logo from '../../images/logo.png';
 import { Link } from 'react-router-dom';
 import {
   Collapse,

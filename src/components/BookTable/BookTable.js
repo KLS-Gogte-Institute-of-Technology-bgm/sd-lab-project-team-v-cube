@@ -1,6 +1,6 @@
 import React from 'react';
 import './BookTable.css';
-import NavBar from './components/NavBar/Navbar';
+import NavBar from '../NavBar/Navbar';
 import { Button, Form, FormGroup, FormFeedback, Label, Input, FormText, Row, Col, CustomInput, Alert } from 'reactstrap';
 
 

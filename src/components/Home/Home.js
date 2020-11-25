@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import NavBar from './components/NavBar/Navbar';
+import NavBar from '../NavBar/Navbar';
 import { Link } from 'react-router-dom';
-import logo from './images/logo.png';
-import home1 from './images/home1.jpg';
-import home2 from './images/home2.jpg';
-import home3 from './images/home3.jpg';
-import './components/Home/Home.css';
+import logo from '../../images/logo.png';
+import home1 from '../../images/home1.jpg';
+import home2 from '../../images/home2.jpg';
+import home3 from '../../images/home3.jpg';
+import './Home.css';
 import {
   Carousel,
   CarouselItem,

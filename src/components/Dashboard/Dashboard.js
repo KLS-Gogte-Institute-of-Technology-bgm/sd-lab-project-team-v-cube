@@ -1,6 +1,6 @@
 import React from 'react';
-import './components/RestaurantUI/RestaurantUI.css';
-import NavBar from './components/NavBar/Navbar'
+import '../RestaurantUI/RestaurantUI.css';
+import NavBar from '../NavBar/Navbar'
 import { Container, Row, Col, Table,  Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button } from 'reactstrap';
 

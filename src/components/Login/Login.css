@@ -1,7 +1,7 @@
 #login-main {
   width: 100vw;
   height: 100vh;
-  background-image: url('../images/loginBackground.jpg');
+  background-image: url('../../images/loginBackground.jpg');
 }
 
 #login-page {

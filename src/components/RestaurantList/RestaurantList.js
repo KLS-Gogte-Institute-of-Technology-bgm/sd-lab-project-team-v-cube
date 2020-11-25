@@ -1,9 +1,9 @@
 import React from 'react';
-import './components/RestaurantList/RestaurantList.css';
+import './RestaurantList.css';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem, Badge, Button, Row, Col } from 'reactstrap';
-import NavBar from './components/NavBar/Navbar';
-import bg1 from './images/bg1.jpg';
+import NavBar from '../NavBar/Navbar';
+import bg1 from '../../images/bg1.jpg';
 
 
 export default class RestaurantList extends React.Component {
