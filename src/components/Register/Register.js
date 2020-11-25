@@ -1,7 +1,7 @@
 import React from 'react';
-import NavBar from './navbar'
+import NavBar from './components/NavBar/Navbar'
 import { Link } from 'react-router-dom';
-import './styles/login.css';
+import './components/Login/Login.css';
 import login3 from './images/login3.jpg';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 

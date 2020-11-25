@@ -2,14 +2,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
-import './styles/index.css';
-import BookTable from './book-table';
-import RestaurantUI from './dashboard';
-import Home from './home';
-import LogIn from './login';
-import Register from './register';
-import RestaurantList from './restaurantList';
-import * as serviceWorker from './serviceWorker';
+import './components/Index/Index.css';
+import BookTable from './components/BookTable/BookTable';
+import RestaurantUI from './components/Dashboard/Dashboard';
+import Home from './components/Home/Home';
+import LogIn from './components/Login/Login';
+import Register from './components/Register/Register';
+import RestaurantList from './components/RestaurantList/RestaurantList';
+import * as serviceWorker from './components/ServiceWorker/ServiceWorker';
 
 const routing = (
   <Router>

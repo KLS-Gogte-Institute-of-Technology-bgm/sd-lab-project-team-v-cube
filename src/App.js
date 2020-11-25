@@ -1,9 +1,9 @@
 import React from 'react';
-import NavBar from './navbar';
-import RestaurantUI from './RestaurantUI';
-import Home from './home';
-import LogIn from './login';
-import RestaurantList from './restaurantList';
+import NavBar from './components/NavBar/Navbar';
+import RestaurantUI from './components/RestaurantUI/RestaurantUI';
+import Home from './components/Home/Home';
+import LogIn from './components/Login/Login';
+import RestaurantList from './components/RestaurantList/RestaurantList';
 
 
 class App extends React.Component {

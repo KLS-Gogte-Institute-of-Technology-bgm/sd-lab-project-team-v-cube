@@ -1,8 +1,8 @@
 import React from 'react';
-import './styles/restaurantList.css';
+import './components/RestaurantList/RestaurantList.css';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem, Badge, Button, Row, Col } from 'reactstrap';
-import NavBar from './navbar';
+import NavBar from './components/NavBar/Navbar';
 import bg1 from './images/bg1.jpg';
 
 
