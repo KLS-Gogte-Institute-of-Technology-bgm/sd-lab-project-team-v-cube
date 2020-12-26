@@ -17,11 +17,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/auth/user').then(res => {
-      this.setState({
-        user: res.data.user
+    axios.get('/api/auth/user')
+      .then(res => {
+        this.setState({
+          user: res.data.user
+        })
       })
-    })
   }
 
   setUser = (user) => {
@@ -42,7 +43,10 @@ class App extends React.Component {
                 <LogIn {...props} setUser={this.setUser} />
               )} />
             <Route path="/dashboard" component={Dashboard} />
-            <Route path="/book-table" component={BookTable} />
+            <Route path="/book-table/:name"
+              render={(props) => (
+                <BookTable {...props} />
+              )} />
             <Route path="/register" component={Register} />
           </Switch>
         </div>

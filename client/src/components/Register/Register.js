@@ -11,6 +11,7 @@ class Register extends React.Component {
     this.state = {
       username: '',
       password: '',
+      resto: '',
       error: '',
       passwordValid: ''
     }
@@ -18,6 +19,10 @@ class Register extends React.Component {
 
   setUsername = (e) => {
     this.setState({ username: e.target.value })
+  }
+
+  setResto = (e) => {
+    this.setState({ resto: e.target.value })
   }
 
   setPassword = (e) => {
@@ -34,7 +39,9 @@ class Register extends React.Component {
 
     axios.post('/api/auth/signup', {
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
+      resto: this.state.resto,
+      flag: 'admin'
     })
       .then(res => {
         this.props.history.push('/login')
@@ -62,6 +69,11 @@ class Register extends React.Component {
             <Input type="password" name="password" id="password" className="detail" placeholder="Enter Password"
               value={this.state.password} onChange={this.setPassword} />
             {this.state.passwordValid || this.state.password.length == 0 ? <span></span> : <FormText className="text-danger">Your password must be at least 10 characters long and must contain a number</FormText>}
+          </FormGroup>
+          <FormGroup>
+            <Label for="examplePassword">Password</Label>
+            <Input type="text" name="resto" id="resto" className="detail" placeholder="Enter Restaurant Name"
+              value={this.state.resto} onChange={this.setResto} />
           </FormGroup>
           <Button color="warning" id="login-button" onClick={this.signUp}>Register</Button>
         </Form>

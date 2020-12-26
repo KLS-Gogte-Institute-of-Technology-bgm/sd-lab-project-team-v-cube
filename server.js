@@ -35,6 +35,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api', require('./routes/booking'))
 app.use(express.json({
   extended: false
 }));

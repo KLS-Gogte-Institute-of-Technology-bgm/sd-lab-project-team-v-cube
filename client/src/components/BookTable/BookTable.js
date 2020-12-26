@@ -1,19 +1,21 @@
 import React from 'react';
 import './BookTable.css';
-import NavBar from '../NavBar/Navbar';
-import { Button, Form, FormGroup, FormFeedback, Label, Input, FormText, Row, Col, CustomInput, Alert } from 'reactstrap';
-
+import { Button, Form, FormGroup, Label, Input, Row, Col, Alert } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 class BookTable extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { bookingID: 100, clicked: false }
-    this.updateBookingId = this.updateBookingId.bind(this)
+    this.state = {
+      bookingID: 100,
+      clicked: false
+    }
   }
 
-  updateBookingId() {
+  updateBookingId = (id) => {
     this.setState({
-      bookingID: this.state.bookingID + 1,
+      bookingID: id,
       clicked: true
     })
   }
@@ -22,8 +24,8 @@ class BookTable extends React.Component {
     return (
       <div id="book-table-main">
         <Row>
-          <Col md={{ size: 4, offset: 1 }} xs="12"><Book bookingID={this.state.bookingID} updateBookingId={this.updateBookingId} clicked={this.state.clicked} /></Col>
-          <Col md="6" xs="12"><Info bookingID={this.state.bookingID} clicked2={this.state.clicked} /></Col>
+          <Col md={{ size: 4, offset: 1 }} s="12"><Book resto={this.props.match.params.name} bookingID={this.state.bookingID} updateBookingId={this.updateBookingId} clicked={this.state.clicked} /></Col>
+          <Col md="6" s="12"><Info bookingID={this.state.bookingID} clicked2={this.state.clicked} /></Col>
         </Row>
       </div>
     );
@@ -33,34 +35,60 @@ class BookTable extends React.Component {
 class Book extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { email: '', mobile: '' }
-    this.allotBookingId = this.allotBookingId.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-  allotBookingId() {
-    if (/.*@.*\.com/.test(this.state.email) || (this.state.mobile.length == 10)) {
-      alert(`Your Booking ID is: ${this.props.bookingID}`);
-      document.getElementById('booking-alert').style.display = "inline";
-      this.props.updateBookingId();
-    }
-    if ((!/^[6789].*/.test(this.state.mobile)) || (this.state.mobile.length != 10)) {
-      alert("Enter a valid mobile number. The mobile number should have 10 digits and must begin with 6, 7, 8 or 9.");
-    }
-    if (!/.*@.*\.com/.test(this.state.email)) {
-      alert("Enter a valid email\n For eg: example@email.com");
+    this.state = {
+      size: '',
+      time: '',
+      name: '',
+      email: '',
+      mobile: '',
+      validEmail: true,
+      validMobile: true
     }
   }
 
-  handleChange(event) {
-    this.setState({
-      email: event.target.value
+  bookTable = (e) => {
+    e.preventDefault();
+    axios.post('/api/book-table', {
+      size: this.state.size,
+      time: this.state.time,
+      name: this.state.name,
+      mobile: this.state.mobile,
+      email: this.state.email,
+      resto: this.props.resto
     })
+      .then(res => {
+        this.props.updateBookingId(res.data.id);
+      })
   }
 
-  handleNumbers(event) {
+  handleChange = (event) => {
     this.setState({
-      mobile: event.target.value
+      [event.target.name]: event.target.value
     })
+
+    if (event.target.name == 'email') {
+      if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(event.target.value)) {
+        this.setState({
+          validEmail: false
+        })
+      } else {
+        this.setState({
+          validEmail: true
+        })
+      }
+    }
+
+    if (event.target.name == 'mobile') {
+      if (!/^\d{10,11}$/.test(event.target.value)) {
+        this.setState({
+          validMobile: false
+        })
+      } else {
+        this.setState({
+          validMobile: true
+        })
+      }
+    }
   }
 
   render() {
@@ -72,11 +100,12 @@ class Book extends React.Component {
             <Label for="group-size">Group Size</Label>
             <Input
               type="number"
-              name="group"
+              name="size"
               id="group-size"
               min="2"
               max="10"
               required
+              onChange={this.handleChange}
             />
           </FormGroup>
           <FormGroup>
@@ -87,6 +116,17 @@ class Book extends React.Component {
               id="booking-time"
               placeholder="time placeholder"
               required
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="name">Name</Label>
+            <Input
+              type="text"
+              name="name"
+              id="name"
+              required
+              onChange={this.handleChange}
             />
           </FormGroup>
           <FormGroup>
@@ -97,8 +137,9 @@ class Book extends React.Component {
               id="mobileNumber"
               placeholder="Enter your mobile number"
               required
-              onChange={this.handleNumber}
+              onChange={this.handleChange}
             />
+            {this.state.validMobile ? <span></span> : <span className="text-danger">Please enter a valid mobile number</span>}
           </FormGroup>
           <FormGroup>
             <Label for="email">Email</Label>
@@ -109,12 +150,13 @@ class Book extends React.Component {
               placeholder="Enter your email address"
               onChange={this.handleChange}
             />
-            <FormFeedback invalid>Enter a valid email</FormFeedback>
+            {this.state.validEmail ? <span></span> : <span className="text-danger">Please enter a valid email</span>}
           </FormGroup>
-          {this.props.clicked ? <Button color="warning" onClick={this.allotBookingId} disabled>Booked</Button> :
-            <Button type="submit" color="warning" onClick={this.allotBookingId}>Book Table</Button>}
 
-          <Alert id="booking-alert" color="success">Booking ID: {this.props.bookingID - 1}</Alert>
+          {this.props.clicked ? <Button color="warning" disabled>Booked</Button> :
+            <Button type="submit" color="warning" onClick={this.bookTable}>Book Table</Button>}
+
+          <Alert id="booking-alert" color="success">Booking ID: {this.props.bookingID}</Alert>
         </Form>
       </div>
     )
@@ -125,7 +167,7 @@ class Book extends React.Component {
 class Info extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { queue: 4, time: 30 }
+    this.state = { time: 30 }
   }
 
 
@@ -135,8 +177,8 @@ class Info extends React.Component {
       <div id="booking-info">
         <h2>Number In Queue: {this.state.queue}</h2>
         <h3>Estimated Waiting Time: {this.state.time} min</h3>
-        {this.props.clicked2 ? <div><h3>Next: {this.props.bookingID + this.state.queue}</h3>
-          <h5>Your Booking ID: {this.props.bookingID - 1}</h5></div> : ''
+        {this.props.clicked2 ? <div><h3>Next: {this.props.bookingID}</h3>
+          <h5>Your Booking ID: {this.props.bookingID}</h5></div> : ''
         }
       </div>
     )
@@ -146,4 +188,4 @@ class Info extends React.Component {
 
 
 
-export default BookTable;
+export default withRouter(BookTable);
