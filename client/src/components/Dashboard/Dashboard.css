@@ -3,23 +3,16 @@ body {
     url("../../images/bg1.jpg");
   background-size: cover;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 #bookings, #resto-layout {
   margin: 30px;
+  padding-bottom: 25%;
   background: #fff;
   border: 2px solid orange;
   border-radius: 10px;
-  height: 80vh;
   opacity: 0.9;
-}
-
-#resto-layout {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  overflow-y: scroll;
-  background: #ddd;
 }
 
 .tables {
@@ -38,6 +31,17 @@ body {
   background: none;
   border: 1px solid orange;
   color: black;
+}
+
+.btn-orange {
+  background: orange;
+  border-color: orange;
+}
+
+.btn-orange:hover {
+  background: orange;
+  border: none;
+  opacity: 0.8;
 }
 
 @media only screen and (max-width: 430px) {

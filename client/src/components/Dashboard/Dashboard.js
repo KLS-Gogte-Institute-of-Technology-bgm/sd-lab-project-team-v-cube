@@ -6,30 +6,33 @@ import {
   Row, Col, Table, Card, CardText, CardBody,
   CardTitle, CardSubtitle, Button
 } from 'reactstrap';
+import { Socket } from 'socket.io';
 
-var tables = [{ id: "Table-1", capacity: 6, occupied: false, btnID: "btn1" }, { id: "Table-2", capacity: 4, occupied: false, btnID: "btn2" }, { id: "Table-3", capacity: 4, occupied: false, btnID: "btn3" }, { id: "Table-4", capacity: 8, occupied: false, btnID: "btn4" }, { id: "Table-5", capacity: 6, occupied: false, btnID: "btn5" }, { id: "Table-6", capacity: 2, occupied: false, btnID: "btn6" }, { id: "Table-7", capacity: 6, occupied: false, btnID: "btn7" }, { id: "Table-8", capacity: 6, occupied: false, btnID: "btn8" }, { id: "Table-9", capacity: 2, occupied: false, btnID: "btn9" }, { id: "Table-10", capacity: 6, occupied: false, btnID: "btn10" }, { id: "Table-11", capacity: 8, occupied: false, btnID: "btn11" }, { id: "Table-12", capacity: 6, occupied: false, btnID: "btn12" }, { id: "Table-13", capacity: 2, occupied: false, btnID: "btn13" }, { id: "Table-14", capacity: 8, occupied: false, btnID: "btn14" }, { id: "Table-15", capacity: 6, occupied: false, btnID: "btn15" }, { id: "Table-16", capacity: 2, occupied: false, btnID: "btn16" }, { id: "Table-17", capacity: 4, occupied: false, btnID: "btn17" }]
+//var tables = [{ id: "Table-1", capacity: 6, occupied: false, btnID: "btn1" }, { id: "Table-2", capacity: 4, occupied: false, btnID: "btn2" }, { id: "Table-3", capacity: 4, occupied: false, btnID: "btn3" }, { id: "Table-4", capacity: 8, occupied: false, btnID: "btn4" }, { id: "Table-5", capacity: 6, occupied: false, btnID: "btn5" }, { id: "Table-6", capacity: 2, occupied: false, btnID: "btn6" }, { id: "Table-7", capacity: 6, occupied: false, btnID: "btn7" }, { id: "Table-8", capacity: 6, occupied: false, btnID: "btn8" }, { id: "Table-9", capacity: 2, occupied: false, btnID: "btn9" }, { id: "Table-10", capacity: 6, occupied: false, btnID: "btn10" }, { id: "Table-11", capacity: 8, occupied: false, btnID: "btn11" }, { id: "Table-12", capacity: 6, occupied: false, btnID: "btn12" }, { id: "Table-13", capacity: 2, occupied: false, btnID: "btn13" }, { id: "Table-14", capacity: 8, occupied: false, btnID: "btn14" }, { id: "Table-15", capacity: 6, occupied: false, btnID: "btn15" }, { id: "Table-16", capacity: 2, occupied: false, btnID: "btn16" }, { id: "Table-17", capacity: 4, occupied: false, btnID: "btn17" }]
 
 class RestaurantUI extends React.Component {
   state = {
     user: {},
-    bookings: []
+    bookings: [],
+    tables: []
   }
   componentDidMount() {
-    console.log('mounted');
     axios.get('/api/auth/user')
       .then(res => {
         if (!res.data.user)
           this.props.history.push('/login')
+        else {
+          this.setState({
+            user: JSON.parse(localStorage.getItem('user'))
+          }, () => {
+            axios.post('/api/fetch-details', { resto: this.state.user.resto })
+              .then(res => {
+                console.log(res.data);
+                this.setState({ bookings: res.data.bookings, tables: res.data.tables });
+              })
+          })
+        }
       })
-
-    this.setState({
-      user: JSON.parse(localStorage.getItem('user'))
-    }, () => {
-      axios.post('/api/fetch-bookings', { resto: this.state.user.resto })
-        .then(res => {
-          this.setState({ bookings: res.data.bookings });
-        })
-    })
   }
 
   render() {
@@ -37,8 +40,8 @@ class RestaurantUI extends React.Component {
       <div id="restoUI">
         <h1 className="text-white m-4">{this.state.user.resto}</h1>
         <Row>
-          <Col md="4" xs="12"><Bookings bookings={this.state.bookings} /></Col>
-          <Col md="8" xs="12"><RestoLayout /></Col>
+          <Col lg="4" md="12"><Bookings bookings={this.state.bookings} /></Col>
+          <Col lg="8" md="12"><RestoLayout tables={this.state.tables} resto={this.state.user.resto} /></Col>
         </Row>
       </div>
     );
@@ -89,22 +92,34 @@ class RestoLayout extends React.Component {
     super(props)
   }
 
+  handleClick = (e) => {
+    if (e.target.value > 100) {
+      axios.post('/api/admin/free-table', { resto: this.props.resto, id: e.target.value })
+        .then(res => {
+          window.location.reload()
+        })
+    } else {
+      axios.post('/api/admin/allot-table', { resto: this.props.resto, idx: e.target.value })
+        .then(res => {
+          window.location.reload()
+        })
+    }
+  }
+
   render() {
-
     return (
-
-
-      <div id="resto-layout">
+      <div id="resto-layout" className="d-flex flex-wrap">
         {
-          tables.map((table, idx, tableArr) => {
+          this.props.tables.map((table, idx, tableArr) => {
             return (
-              <Card className="tables" id={table.id}>
+              <Card className="tables col-md-4 col-lg-3 col-xl-2" id={idx}>
                 <CardBody>
-                  <CardTitle><strong>{table.id.replace('-', ' ').toUpperCase()}</strong></CardTitle>
+                  <CardTitle><strong>{'Table-' + (idx + 1)}</strong></CardTitle>
                   <hr />
                   <CardSubtitle>Capacity: {table.capacity}</CardSubtitle>
-                  <CardText>Status: {table.occupied ? 'Full' : 'Free'}</CardText>
-                  <AllotButton id={`${idx}`} status={table.occupied} tableId={table.id} btnID={table.btnID} />
+                  <CardText>Status: {table.occupied ? 'Booked' : 'Free'}</CardText>
+                  <CardText>Booking ID: {table.id ? table.id : 'None'}</CardText>
+                  <Button id={idx} className={table.occupied ? 'btn-secondary' : 'btn-orange'} value={table.id ? table.id : idx} onClick={this.handleClick}>{table.occupied ? 'Free Table' : 'Allot'}</Button>
                 </CardBody>
               </Card>
             )
@@ -114,41 +129,41 @@ class RestoLayout extends React.Component {
   }
 }
 
-class AllotButton extends React.Component {
-  constructor(props) {
-    super(props)
-    this.handleClick = this.handleClick.bind(this);
-    this.changeStatus = this.changeStatus.bind(this);
-  }
+// class AllotButton extends React.Component {
+//   constructor(props) {
+//     super(props)
+//     this.handleClick = this.handleClick.bind(this);
+//     this.changeStatus = this.changeStatus.bind(this);
+//   }
 
-  changeStatus(arg) {
-    for (let i = 0; i < tables.length; i++) {
-      if (tables[i].id == arg) {
-        tables[i].occupied = !tables[i].occupied;
-      }
-    }
-  }
+//   changeStatus(arg) {
+//     for (let i = 0; i < tables.length; i++) {
+//       if (tables[i].id == arg) {
+//         tables[i].occupied = !tables[i].occupied;
+//       }
+//     }
+//   }
 
-  handleClick() {
-    if (this.props.status) {
-      document.getElementById(this.props.tableId).style.opacity = '1';
-      //document.getElementById(this.props.btnID).style.background = "orange";
-      this.changeStatus(this.props.tableId);
-    } else {
-      document.getElementById(this.props.tableId).style.opacity = '0.5';
-      document.getElementById(this.props.btnID).style.background = "green";
-      this.changeStatus(this.props.tableId);
-    }
+//   handleClick() {
+//     if (this.props.status) {
+//       document.getElementById(this.props.tableId).style.opacity = '1';
+//       //document.getElementById(this.props.btnID).style.background = "orange";
+//       this.changeStatus(this.props.tableId);
+//     } else {
+//       document.getElementById(this.props.tableId).style.opacity = '0.5';
+//       document.getElementById(this.props.id).style.background = "green";
+//       this.changeStatus(this.props.tableId);
+//     }
 
-  }
+//   }
 
-  render() {
+//   render() {
 
-    return (
-      <Button id={this.props.id} id={this.props.btnID} className="allot btn-warning" onClick={this.handleClick}>Allot</Button>
-    )
-  }
-}
+//     return (
+//       <Button id={this.props.id} className="allot btn-warning" onClick={this.handleClick}>Allot</Button>
+//     )
+//   }
+// }
 
 
 

@@ -3,14 +3,33 @@ import './BookTable.css';
 import { Button, Form, FormGroup, Label, Input, Row, Col, Alert } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import socketIOClient from 'socket.io-client';
 
+const ENDPOINT = "http://127.0.0.1:5000";
+const socket = socketIOClient(ENDPOINT);
 class BookTable extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       bookingID: 100,
-      clicked: false
+      clicked: false,
+      queue: null
     }
+  }
+
+  componentDidMount() {
+    socket.on(this.props.match.params.name, data => {
+      if (data.id)
+        this.setState({ bookingID: data.id });
+      let pos = data.bookings.findIndex(x => x._id == this.state.bookingID) + 1 - data.tables;
+      console.log('position', pos, this.state.bookingID, data.bookings, data.tables);
+      this.setState({ queue: pos, tableNum: data.tables })
+    })
+  }
+
+  componentWillUnmount() {
+    socket.off(this.props.match.params.name)
+    socket.disconnect()
   }
 
   updateBookingId = (id) => {
@@ -25,7 +44,7 @@ class BookTable extends React.Component {
       <div id="book-table-main">
         <Row>
           <Col md={{ size: 4, offset: 1 }} s="12"><Book resto={this.props.match.params.name} bookingID={this.state.bookingID} updateBookingId={this.updateBookingId} clicked={this.state.clicked} /></Col>
-          <Col md="6" s="12"><Info bookingID={this.state.bookingID} clicked2={this.state.clicked} /></Col>
+          <Col md="6" s="12"><Info bookingID={this.state.bookingID} clicked2={this.state.clicked} queue={this.state.queue} /></Col>
         </Row>
       </div>
     );
@@ -167,7 +186,7 @@ class Book extends React.Component {
 class Info extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { time: 30 }
+    this.state = { time: 45 }
   }
 
 
@@ -175,9 +194,10 @@ class Info extends React.Component {
 
     return (
       <div id="booking-info">
-        <h2>Number In Queue: {this.state.queue}</h2>
-        <h3>Estimated Waiting Time: {this.state.time} min</h3>
-        {this.props.clicked2 ? <div><h3>Next: {this.props.bookingID}</h3>
+        {this.props.queue == null ? <h3 className="text-center">Please enter your details to book a table</h3> : this.props.queue <= 0 ? <h3>Your table has been reserved. You can proceed to the restaurant.</h3> :
+          <div><h2>Number In Queue: {this.props.queue}</h2> <h3>Estimated Waiting Time: {this.state.time * this.props.queue} min</h3></div>}
+
+        {this.props.clicked2 ? <div>
           <h5>Your Booking ID: {this.props.bookingID}</h5></div> : ''
         }
       </div>
