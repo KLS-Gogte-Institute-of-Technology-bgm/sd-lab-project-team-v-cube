@@ -186,7 +186,7 @@ class Book extends React.Component {
 class Info extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { time: 45 }
+    this.state = { time: 60 }
   }
 
 

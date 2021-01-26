@@ -48,7 +48,7 @@ class NavBar extends React.Component {
   render() {
     return (
       <div>
-        <Navbar id="navbar" dark expand="md" className="bg-dark">
+        <Navbar id="navbar" dark expand="md" style={{ background: this.props.location.pathname == '/' || '/login' ? '#111' : 'transparent' }}>
           <Link to="/"><NavbarBrand href="/" id="navbar1"><img src={logo} width="60" height="60" /></NavbarBrand></Link>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>

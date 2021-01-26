@@ -6,7 +6,6 @@ import {
   Row, Col, Table, Card, CardText, CardBody,
   CardTitle, CardSubtitle, Button
 } from 'reactstrap';
-import { Socket } from 'socket.io';
 
 //var tables = [{ id: "Table-1", capacity: 6, occupied: false, btnID: "btn1" }, { id: "Table-2", capacity: 4, occupied: false, btnID: "btn2" }, { id: "Table-3", capacity: 4, occupied: false, btnID: "btn3" }, { id: "Table-4", capacity: 8, occupied: false, btnID: "btn4" }, { id: "Table-5", capacity: 6, occupied: false, btnID: "btn5" }, { id: "Table-6", capacity: 2, occupied: false, btnID: "btn6" }, { id: "Table-7", capacity: 6, occupied: false, btnID: "btn7" }, { id: "Table-8", capacity: 6, occupied: false, btnID: "btn8" }, { id: "Table-9", capacity: 2, occupied: false, btnID: "btn9" }, { id: "Table-10", capacity: 6, occupied: false, btnID: "btn10" }, { id: "Table-11", capacity: 8, occupied: false, btnID: "btn11" }, { id: "Table-12", capacity: 6, occupied: false, btnID: "btn12" }, { id: "Table-13", capacity: 2, occupied: false, btnID: "btn13" }, { id: "Table-14", capacity: 8, occupied: false, btnID: "btn14" }, { id: "Table-15", capacity: 6, occupied: false, btnID: "btn15" }, { id: "Table-16", capacity: 2, occupied: false, btnID: "btn16" }, { id: "Table-17", capacity: 4, occupied: false, btnID: "btn17" }]
 
@@ -40,8 +39,8 @@ class RestaurantUI extends React.Component {
       <div id="restoUI">
         <h1 className="text-white m-4">{this.state.user.resto}</h1>
         <Row>
-          <Col lg="4" md="12"><Bookings bookings={this.state.bookings} /></Col>
-          <Col lg="8" md="12"><RestoLayout tables={this.state.tables} resto={this.state.user.resto} /></Col>
+          <Col lg="5" md="12"><Bookings bookings={this.state.bookings} /></Col>
+          <Col lg="7" md="12"><RestoLayout tables={this.state.tables} resto={this.state.user.resto} /></Col>
         </Row>
       </div>
     );
@@ -112,7 +111,7 @@ class RestoLayout extends React.Component {
         {
           this.props.tables.map((table, idx, tableArr) => {
             return (
-              <Card className="tables col-md-4 col-lg-3 col-xl-2" id={idx}>
+              <Card className="tables col-md-4 col-lg-4 col-xl-3" id={idx}>
                 <CardBody>
                   <CardTitle><strong>{'Table-' + (idx + 1)}</strong></CardTitle>
                   <hr />

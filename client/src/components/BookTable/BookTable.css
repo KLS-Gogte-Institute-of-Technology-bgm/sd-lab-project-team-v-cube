@@ -1,9 +1,9 @@
 #booking-process, #booking-info {
-  margin: 30px;
+  margin: 20px;
   background: #fff;
   border: 2px solid orange;
   border-radius: 10px;
-  padding: 40px;
+  padding: 30px;
 }
 
 #group-size {

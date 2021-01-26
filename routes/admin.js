@@ -19,7 +19,20 @@ router.post('/free-table', (req, res) => {
             let tables = data.tables;
             let bookings = data.bookings;
             let freeTables = tables.length - tables.filter(x => x.occupied == false).length;
+            // let fullIds = tables.map(x => x.id)
+            // let allIds = bookings.map(x => x._id)
+            // let freeIds = allIds.filter(x => !fullIds.includes(x));
+            // console.log(freeIds);
 
+            // for(let i in freeIds) {
+            //     for (let j in tables) {
+            //         if (!tables[j].occupied && tables[j].capacity >= free[i].size) {
+            //             tables[j].occupied = true;
+            //             tables[j].id = bookings[i]._id;
+            //             break;
+            //         }
+            //     }
+            // }
             for (let i = freeTables; i < bookings.length; i++) {
                 for (let j in tables) {
                     if (!tables[j].occupied && tables[j].capacity >= bookings[i].size) {
