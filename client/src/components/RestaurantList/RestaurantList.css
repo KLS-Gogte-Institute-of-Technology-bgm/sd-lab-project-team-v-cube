@@ -1,0 +1,74 @@
+.justify-content-between {
+  width: 380px;
+  height: 83px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+#list-layout {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.icon {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+}
+
+.rating {
+  color: white;
+}
+
+#rt1, #rt3, #rt5, #rt7, #rt8, #rt11, #rt12 {
+  background: green;
+}
+
+#rt2, #rt4, #rt6, #rt10 {
+  background: orange;
+}
+
+#rt9 {
+  background: red;
+}
+
+.type {
+  font-size: 15px;
+  color: #999;
+}
+
+.book {
+  color: black;
+  float: right;
+  margin-top: -15px;
+  margin-right: -10px;
+  background: #eee;
+  border: none;
+}
+
+.book:hover {
+  background: none;
+  color: black;
+  border: 1px solid orange;
+}
+
+@media only screen and (max-width: 425px) {
+  .type {
+    font-size: 13px;
+  }
+
+  .justify-content-between {
+    font-size: 15px;
+  }
+
+  .book {
+    width: 80px;
+    margin-top: -25px;
+  }
+}

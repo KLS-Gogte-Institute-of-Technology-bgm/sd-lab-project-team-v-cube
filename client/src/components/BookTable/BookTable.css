@@ -1,0 +1,30 @@
+#booking-process, #booking-info {
+  margin: 20px;
+  background: #fff;
+  border: 2px solid orange;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+#group-size {
+  width: 100px;
+}
+
+#booking-time {
+  width: 150px;
+}
+
+#booking-alert {
+  display: none;
+  float: right;
+}
+
+#booking-info {
+  font-size: 30px;
+}
+
+@media (max-width:320px) {
+  #booking-info {
+    font-size: 20px;
+  }
+}
